@@ -57,9 +57,9 @@ public:
 	// If lines are perpendicular, then gradient g1 * g2 equals -1
 	// or if one Line l1 is vertical while the other is horizontal, vice versa
 	bool isPerpendicular(Line l) {
-		return abs(this->getGradient() * l.getGradient() + 1.0) < EPSILON
-			|| this->isVertical() && l.isHorizontal()
-			|| this->isHorizontal() && l.isVertical();
+		return this->isVertical() && l.isHorizontal()
+			|| this->isHorizontal() && l.isVertical()
+			|| abs(this->getGradient() * l.getGradient() + 1.0) < EPSILON;
 	}
 
 	// Checks if this line is vertical
