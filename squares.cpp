@@ -58,12 +58,20 @@ public:
 	}
 
 	bool isSquare(ParallelLines p) {
-		if(this->l1.getGradient() * p.l1.getGradient() + 1.0 > numeric_limits<double>::epsilon()
-			&& this->getPerpendicularDistance() - p.getPerpendicularDistance() < numeric_limits<double>::epsilon()) {
+		if(this->isPerpendicular(p) && this->hasSamePerpendicularDistanceBetweenLines(p)) {
 			return true;
 		}
 
 		return false;
+	}
+
+	bool isPerpendicular(ParallelLines p) {
+		// If lines are perpendicular, then gradient g1 * g2 equals -1
+		return (this->l1.getGradient() * p.l1.getGradient() + 1.0) > numeric_limits<double>::epsilon();
+	}
+
+	bool hasSamePerpendicularDistanceBetweenLines(ParallelLines p) {
+		return (this->getPerpendicularDistance() - p.getPerpendicularDistance()) < numeric_limits<double>::epsilon();
 	}
 
 	double getPerpendicularDistance() {
