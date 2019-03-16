@@ -23,7 +23,7 @@ public:
 	}
 
 	toString() {
-		cout << x << ", " << y << "\n";
+		cout << "(" << x << ", " << y << ")\n";
 	}
 };
 
@@ -49,6 +49,15 @@ public:
 		return (abs(this->getGradient() - l.getGradient()) < numeric_limits<double>::epsilon());
 	}
 
+	// Checks if this line and given line are perpendicular using gradient
+	// If lines are perpendicular, then gradient g1 * g2 equals -1
+	// or if one Line l1 is vertical while the other is horizontal, vice versa
+	bool isPerpendicular(Line l) {
+		return abs(this->getGradient() * l.getGradient() + 1.0) < numeric_limits<double>::epsilon()
+			|| this->isVertical() && l.isHorizontal()
+			|| this->isHorizontal() && l.isVertical();
+	}
+
 	// Checks if this line is vertical
 	bool isVertical() {
 		return abs(this->getGradient() - numeric_limits<double>::max()) < numeric_limits<double>::epsilon();
@@ -60,20 +69,19 @@ public:
 	}
 
 	// Computes gradient of this line
+	// gradient = (y2 - y1) / (x2 - x1);
+	// if x2 - x1 equals zero, return "infinity"
 	double getGradient() {
-		// gradient = (y2 - y1) / (x2 - x1);
 		if(abs(this->p2.x - this->p1.x) > numeric_limits<double>::epsilon()) {
 			return (double) (this->p2.y - this->p1.y) / (double) (this->p2.x - this->p1.x);
 		}
 
-		// if x2 - x1 equals zero, return "infinity"
 		return numeric_limits<double>::max();
 	}
 
 	// Computes y-axis intersection of this line
+	// c = y - mx
 	double getC() {
-		// y = mx + c
-		// c = y - mx
 		// if(abs(this->getGradient() - numeric_limits<double>::max()) < numeric_limits<double>::epsilon()) {
 		// 	return this->p1.y - this->getGradient() * this->p1.x;
 		// }
@@ -81,18 +89,16 @@ public:
 		return this->p1.y - this->getGradient() * this->p1.x;
 	}
 
-	// Computes intersection point of this line and given line
+	// Computes intersection point (x, y) of this line and given line
+	// x = (c2 - c1) / (m1 - m2)
+	// y = m1 * x + c1
 	Point getIntersectionPoint(Line l) {
 		double x = 0;
-		double y = 0;
-
-		// x = (c2 - c1) / (m1 - m2)
+		double y = 0;		
 		// if (abs(this->getGradient() - l.getGradient() > numeric_limits<double>::epsilon())) {
 		// 	x = (l.getC() - this->getC()) / (this->getGradient() - l.getGradient());
 		// }
 		x = (double) (l.getC() - this->getC()) / (double) (this->getGradient() - l.getGradient());
-
-		// y = m1 * x + c1
 		y = this->getGradient() * x + this->getC();
 
 		return Point{x, y};
@@ -121,19 +127,22 @@ public:
 		Point p3 = this->l2.getIntersectionPoint(p.l1);
 		Point p4 = this->l2.getIntersectionPoint(p.l2);
 
-		return this->isPerpendicular(p)
+		cout << "Intersection points: " << endl;
+		p1.toString();
+		p2.toString();
+		p3.toString();
+		p4.toString();
+		cout << endl;
+
+		cout << "Euclidean distances: " << endl;
+		cout << p1.getEuclideanDistance(p2) << endl;
+		cout << p1.getEuclideanDistance(p3) << endl;
+		cout << p1.getEuclideanDistance(p4) << endl;
+		cout << endl;
+
+		return this->l1.isPerpendicular(p.l1)
 			&& (abs(p1.getEuclideanDistance(p2) - p1.getEuclideanDistance(p3)) < numeric_limits<double>::epsilon()
 			|| abs(p1.getEuclideanDistance(p2) - p1.getEuclideanDistance(p4)) < numeric_limits<double>::epsilon());
-	}
-
-	// Checks if this pair of parallel lines and given pair of parallel lines
-	// are perpendicular
-	bool isPerpendicular(ParallelLines p) {
-		// If lines are perpendicular, then gradient g1 * g2 equals -1
-		// or if one Line l1 is vertical while the other is horizontal, vice versa
-		return abs(this->l1.getGradient() * p.l1.getGradient() + 1.0) < numeric_limits<double>::epsilon()
-			|| this->l1.isVertical() && p.l1.isHorizontal()
-			|| this->l1.isHorizontal() && p.l1.isVertical();
 	}
 
 	toString() {
