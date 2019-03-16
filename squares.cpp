@@ -28,6 +28,7 @@ public:
 		this->p2 = p2;
 	}
 
+	// Checks if this line and given line are parallel using gradient
 	bool isParallel(Line l) {
 		string isParallel = ((this->getGradient() - l.getGradient() < numeric_limits<double>::epsilon())) ? "true" : "false";
 		cout << "isParallel(): gradients = (" << this->getGradient() << ", " << l.getGradient() << "), parallel = " << isParallel << "\n";
@@ -35,6 +36,7 @@ public:
 		return (this->getGradient() - l.getGradient() < numeric_limits<double>::epsilon());
 	}
 
+	// Computes gradient of this line
 	double getGradient() {
 		if(this->p2.x - this->p1.x > numeric_limits<double>::epsilon()) {
 			// cout << (double) (this->p2.y - this->p1.y) / (double) (this->p2.x - this->p1.x);
@@ -57,6 +59,8 @@ public:
 		this->l2 = l2;
 	}
 
+	// Checks if this pair of parallel lines and given pair of parallel lines
+	// forms a square between intersection points
 	bool isSquare(ParallelLines p) {
 		if(this->isPerpendicular(p) && this->hasSamePerpendicularDistanceBetweenLines(p)) {
 			return true;
@@ -65,15 +69,21 @@ public:
 		return false;
 	}
 
+	// Checks if this pair of parallel lines and given pair of parallel lines
+	// are perpendicular
 	bool isPerpendicular(ParallelLines p) {
 		// If lines are perpendicular, then gradient g1 * g2 equals -1
 		return (this->l1.getGradient() * p.l1.getGradient() + 1.0) > numeric_limits<double>::epsilon();
 	}
 
+	// Checks if the 2 sets of parallel lines has same perpendicular distance between their lines l1 and l2.
 	bool hasSamePerpendicularDistanceBetweenLines(ParallelLines p) {
+		// For each pair of parallel lines, compute perpendicular distance between lines l1 and l2.
+		// Check if the perpendicular distances are the same for the two pairs of parallel lines.
 		return (this->getPerpendicularDistance() - p.getPerpendicularDistance()) < numeric_limits<double>::epsilon();
 	}
 
+	// Compute perpendicular distance between lines l1 and l2
 	double getPerpendicularDistance() {
 		// Need to compute perpendicular distance between this->l1 and this->l2
 		// ...
@@ -91,9 +101,11 @@ public:
 	}
 };
 
+// Finds all pairs of parallel lines given a vector of lines
 vector<ParallelLines> findParallelLines(vector<Line> lines) {
 	vector<ParallelLines> p;
 
+	// Time complexity: O(n^2)
 	for (int i = 0; i < lines.size(); ++i) {
 		for (int j = i+1; j < lines.size(); ++j) {
 			if(lines[i].isParallel(lines[j])) {
@@ -105,9 +117,11 @@ vector<ParallelLines> findParallelLines(vector<Line> lines) {
 	return p;
 }
 
+// Find all squares given a vector of parallel lines
 int findSquares(vector<ParallelLines> parallelLines) {
 	int count = 0;
 
+	// Time complexity: O(n^2)
 	for(int i = 0; i < parallelLines.size(); ++i) {
 		for (int j = i+1; j < parallelLines.size(); ++j) {
 			if(parallelLines[i].isSquare(parallelLines[j])) {
