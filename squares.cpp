@@ -180,18 +180,18 @@ int main(int argc, char** argv) {
 	Line l3 { p5, p6 };
 	Line l4 { p7, p8 };
 
-	// Lines l1 and l2 are parallel lines p1
+	// Lines l5 and l6 are parallel lines p3
 	Line l5 { p9, p10 };
 	Line l6 { p11, p12 };
 
-	// Lines l3 and l4 are parallel lines p2
+	// Lines l7 and l8 are parallel lines p4
 	Line l7 { p13, p14 };
 	Line l8 { p15, p16 };
 
 	// Initialize lines
 	// Parallel lines p1 and p2 form a square
-	vector<Line> lines { l1, l2, l3, l4 };
-	// vector<Line> lines { l1, l2, l3, l4, l5, l6, l7, l8 };
+	// Parallel lines p3 and p4 form a square
+	vector<Line> lines { l1, l2, l3, l4, l5, l6, l7, l8 };
 
 	// Find all pairs of parallel lines
 	cout << "Find parallel lines: \n";
