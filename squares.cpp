@@ -5,18 +5,20 @@
 
 using namespace std;
 
+// A Point/Coordinate is defined as a pair of doubles (x, y)
 class Point {
 public:
-	int x, y;
+	double x, y;
 
 	Point() {}
 
-	Point(int x, int y) {
+	Point(double x, double y) {
 		this->x = x;
 		this->y = y;
 	}
 };
 
+// A Line is defined as a pair of Points (p1, p2)
 class Line {
 public:
 	Point p1, p2;
@@ -38,15 +40,17 @@ public:
 
 	// Computes gradient of this line
 	double getGradient() {
+		// gradient = (y2 - y1) / (x2 - x1);
 		if(this->p2.x - this->p1.x > numeric_limits<double>::epsilon()) {
-			// cout << (double) (this->p2.y - this->p1.y) / (double) (this->p2.x - this->p1.x);
 			return (double) (this->p2.y - this->p1.y) / (double) (this->p2.x - this->p1.x);
 		}
 
+		// if x2 - x1 equals zero, return "infinity"
 		return numeric_limits<double>::max();
 	}
 };
 
+// Stores a pair of lines that are parallel, i.e. gradients of both lines are the same
 class ParallelLines {
 public:
 	Line l1;
@@ -134,36 +138,43 @@ int findSquares(vector<ParallelLines> parallelLines) {
 }
 
 int main(int argc, char** argv) {
-	Point p1 { 0, 0 };
-	Point p2 { 0, 1 };
+	Point p1 { 0.0, 0.0 };
+	Point p2 { 0.0, 1.0 };
 
-	Point p3 { 1, 0 };
-	Point p4 { 1, 1 };
+	Point p3 { 1.0, 0.0 };
+	Point p4 { 1.0, 1.0 };
 
-	Point p5 { 0, 0 };
-	Point p6 { 1, 0 };
+	Point p5 { 0.0, 0.0 };
+	Point p6 { 1.0, 0.0 };
 
-	Point p7 { 0, 1 };
-	Point p8 { 1, 1 };
+	Point p7 { 0.0, 1.0 };
+	Point p8 { 1.0, 1.0 };
 
+	// Lines l1 and l2 are parallel lines p1
 	Line l1 { p1, p2 };
 	Line l2 { p3, p4 };
 
+	// Lines l3 and l4 are parallel lines p2
 	Line l3 { p5, p6 };
 	Line l4 { p7, p8 };
 
+	// Initialize lines
+	// Parallel lines p1 and p2 form a square
 	vector<Line> lines { l1, l2, l3, l4 };
 
+	// Find all pairs of parallel lines
 	cout << "Find parallel lines: \n";
 	vector<ParallelLines> parallelLines = findParallelLines(lines);
 	cout << "\n";
 
+	// Print details of parallel lines
 	cout << "Parallel lines: \n";
 	for(auto &i : parallelLines) {
 		i.toString();
 	}
 	cout << "\n";
 
+	// Find all possible squares given a set of parallel lines
 	int numOfSquares = findSquares(parallelLines);
 	cout << "Number of squares: " << numOfSquares;
 
