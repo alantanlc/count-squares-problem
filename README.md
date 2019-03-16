@@ -1,8 +1,6 @@
 # count-squares-problem
 
-[WORK IN PROGRESS] Given a diagram with many straight lines, count how many squares in the diagram and its time complexity.
-
-## Notes
+Given a diagram with many straight lines, count how many squares in the diagram and its time complexity.
 
 My silly and brute force attempt on the following interview question posted on Glassdoor.
 

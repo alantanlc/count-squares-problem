@@ -193,12 +193,14 @@ int countSquares(vector<Line> lines) {
 	// Find all pairs of parallel lines given vector of lines
 	vector<ParallelLines> parallelLines = findParallelLines(lines);
 
-	// Print parallel lines
-	// cout << "\nParallel lines: \n";
-	// for(auto &i : parallelLines) {
-	// 	i.toString();
-	// }
-	// cout << "\n";
+	if(IS_PRINT_LOGS) {
+		// Print parallel lines
+		cout << "\nParallel lines: \n";
+		for(auto &i : parallelLines) {
+			i.toString();
+		}
+		cout << "\n";
+	}
 
 	// Time complexity: O(n^2)
 	int count = 0;
