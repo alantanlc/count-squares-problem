@@ -22,6 +22,11 @@ public:
 		return sqrt(pow(this->x - p.x, 2) + pow(this->y - p.y, 2));
 	}
 
+	bool isValid() {
+		return !abs(this->x - numeric_limits<double>::max()) < numeric_limits<double>::epsilon()
+			&& !abs(this->y - numeric_limits<double>::max()) < numeric_limits<double>::epsilon();
+	}
+
 	toString() {
 		cout << "(" << x << ", " << y << ")\n";
 	}
@@ -82,10 +87,12 @@ public:
 	// Computes y-axis intersection of this line
 	// c = y - mx
 	double getC() {
-		// if(abs(this->getGradient() - numeric_limits<double>::max()) < numeric_limits<double>::epsilon()) {
-		// 	return this->p1.y - this->getGradient() * this->p1.x;
-		// }
-		// return numeric_limits<double>::max();
+		if(this->isVertical()) {
+			return numeric_limits<double>::max();
+		} else if(this->isHorizontal()) {
+			return this->p1.y;
+		}
+
 		return this->p1.y - this->getGradient() * this->p1.x;
 	}
 
@@ -93,13 +100,19 @@ public:
 	// x = (c2 - c1) / (m1 - m2)
 	// y = m1 * x + c1
 	Point getIntersectionPoint(Line l) {
-		double x = 0;
-		double y = 0;		
-		// if (abs(this->getGradient() - l.getGradient() > numeric_limits<double>::epsilon())) {
-		// 	x = (l.getC() - this->getC()) / (this->getGradient() - l.getGradient());
-		// }
-		x = (double) (l.getC() - this->getC()) / (double) (this->getGradient() - l.getGradient());
-		y = this->getGradient() * x + this->getC();
+		double x = numeric_limits<double>::max();
+		double y = numeric_limits<double>::max();
+
+		if(this->isVertical() && l.isHorizontal()) {
+			x = this->p1.x;
+			y = l.p1.y;
+		} else if (this->isHorizontal() && l.isVertical()) {
+			x = l.p1.x;
+			y = this->p1.y;
+		} else if (!this->isParallel(l)) {
+			x = (double) (l.getC() - this->getC()) / (double) (this->getGradient() - l.getGradient());
+			y = this->getGradient() * x + this->getC();
+		}
 
 		return Point{x, y};
 	}
@@ -139,6 +152,10 @@ public:
 		cout << p1.getEuclideanDistance(p3) << endl;
 		cout << p1.getEuclideanDistance(p4) << endl;
 		cout << endl;
+
+		if(!p1.isValid() && !p2.isValid() && !p3.isValid() && !p4.isValid()) {
+			return false;
+		}
 
 		return this->l1.isPerpendicular(p.l1)
 			&& (abs(p1.getEuclideanDistance(p2) - p1.getEuclideanDistance(p3)) < numeric_limits<double>::epsilon()
@@ -231,8 +248,7 @@ int main(int argc, char** argv) {
 	// Initialize lines
 	// Parallel lines p1 and p2 form a square
 	// Parallel lines p3 and p4 form a square
-	vector<Line> lines { l5, l6, l7, l8 };
-	// vector<Line> lines { l1, l2, l3, l4, l5, l6, l7, l8 };
+	vector<Line> lines { l1, l2, l3, l4, l5, l6, l7, l8 };
 
 	// Find all pairs of parallel lines
 	cout << "Find parallel lines: \n";
