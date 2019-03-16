@@ -38,6 +38,16 @@ public:
 		return (this->getGradient() - l.getGradient() < numeric_limits<double>::epsilon());
 	}
 
+	// Checks if this line is vertical
+	bool isVertical() {
+		return this->getGradient() - numeric_limits<double>::max() < numeric_limits<double>::epsilon();
+	}
+
+	// Checks if this line is horizontal
+	bool isHorizontal() {
+		return this->getGradient() < numeric_limits<double>::epsilon();
+	}
+
 	// Computes gradient of this line
 	double getGradient() {
 		// gradient = (y2 - y1) / (x2 - x1);
@@ -77,7 +87,11 @@ public:
 	// are perpendicular
 	bool isPerpendicular(ParallelLines p) {
 		// If lines are perpendicular, then gradient g1 * g2 equals -1
-		return (this->l1.getGradient() * p.l1.getGradient() + 1.0) > numeric_limits<double>::epsilon();
+		// or both Line l1 are vertical
+		// or both Line l1 are horizontal
+		return (this->l1.getGradient() * p.l1.getGradient() + 1.0) < numeric_limits<double>::epsilon()
+			|| this->l1.isVertical() && p.l1.isVertical()
+			|| this->l1.isHorizontal() && p.l1.isHorizontal();
 	}
 
 	// Checks if the 2 sets of parallel lines has same perpendicular distance between their lines l1 and l2.
