@@ -1,20 +1,28 @@
 # count-squares-problem
 
-My silly attempt at the following interview question posted on Glassdoor: 
+[WORK IN PROGRESS] Given a diagram with many straight lines, count how many squares in the diagram and its time complexity.
 
-Given a diagram with many straight lines, count how many squares in the diagram and its time complexity.  
+## Notes
+
+My silly and brute force attempt on the following interview question posted on Glassdoor.
 
 https://www.glassdoor.sg/Interview/Google-Interview-RVW24716000.htm
 
-Ping me if you would like to discuss on this problem!
+Contact me if you would like to discuss on this problem!
 
-# Compile using g++ 6.3.0
+WORK IN PROGRESS: Still yet to implement the function getPerpendicularDistance()
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Compile using g++ 6.3.0
 
 ```
 g++ squares.cpp
 ```
 
-# Run on Windows
+### Run on Windows
 
 ```
 a.exe
