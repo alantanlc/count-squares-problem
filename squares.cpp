@@ -17,6 +17,14 @@ public:
 		this->x = x;
 		this->y = y;
 	}
+
+	double getEuclideanDistance(Point p) {
+		return sqrt(pow(this->x - p.x, 2) + pow(this->y - p.y, 2));
+	}
+
+	toString() {
+		cout << x << ", " << y << "\n";
+	}
 };
 
 // A Line is defined as a pair of Points (p1, p2)
@@ -61,6 +69,34 @@ public:
 		// if x2 - x1 equals zero, return "infinity"
 		return numeric_limits<double>::max();
 	}
+
+	// Computes y-axis intersection of this line
+	double getC() {
+		// y = mx + c
+		// c = y - mx
+		// if(abs(this->getGradient() - numeric_limits<double>::max()) < numeric_limits<double>::epsilon()) {
+		// 	return this->p1.y - this->getGradient() * this->p1.x;
+		// }
+		// return numeric_limits<double>::max();
+		return this->p1.y - this->getGradient() * this->p1.x;
+	}
+
+	// Computes intersection point of this line and given line
+	Point getIntersectionPoint(Line l) {
+		double x = 0;
+		double y = 0;
+
+		// x = (c2 - c1) / (m1 - m2)
+		// if (abs(this->getGradient() - l.getGradient() > numeric_limits<double>::epsilon())) {
+		// 	x = (l.getC() - this->getC()) / (this->getGradient() - l.getGradient());
+		// }
+		x = (double) (l.getC() - this->getC()) / (double) (this->getGradient() - l.getGradient());
+
+		// y = m1 * x + c1
+		y = this->getGradient() * x + this->getC();
+
+		return Point{x, y};
+	}
 };
 
 // Stores a pair of lines that are parallel, i.e. gradients of both lines are the same
@@ -79,7 +115,15 @@ public:
 	// Checks if this pair of parallel lines and given pair of parallel lines
 	// forms a square between intersection points
 	bool isSquare(ParallelLines p) {
-		return this->isPerpendicular(p) && this->hasSamePerpendicularDistanceBetweenLines(p);
+		// Find the 4 intersection points if exist
+		Point p1 = this->l1.getIntersectionPoint(p.l1);
+		Point p2 = this->l1.getIntersectionPoint(p.l2);
+		Point p3 = this->l2.getIntersectionPoint(p.l1);
+		Point p4 = this->l2.getIntersectionPoint(p.l2);
+
+		return this->isPerpendicular(p)
+			&& (abs(p1.getEuclideanDistance(p2) - p1.getEuclideanDistance(p3)) < numeric_limits<double>::epsilon()
+			|| abs(p1.getEuclideanDistance(p2) - p1.getEuclideanDistance(p4)) < numeric_limits<double>::epsilon());
 	}
 
 	// Checks if this pair of parallel lines and given pair of parallel lines
@@ -92,29 +136,16 @@ public:
 			|| this->l1.isHorizontal() && p.l1.isVertical();
 	}
 
-	// Checks if the 2 sets of parallel lines has same perpendicular distance between their lines l1 and l2.
-	bool hasSamePerpendicularDistanceBetweenLines(ParallelLines p) {
-		// For each pair of parallel lines, compute perpendicular distance between lines l1 and l2.
-		// Check if the perpendicular distances are the same for the two pairs of parallel lines.
-		return abs(this->getPerpendicularDistance() - p.getPerpendicularDistance()) < numeric_limits<double>::epsilon();
-	}
-
-	// Compute perpendicular distance between lines l1 and l2
-	double getPerpendicularDistance() {
-		// HELP!
-		// Need to compute perpendicular distance between this->l1 and this->l2
-		// ...
-
-		return 0;
-	}
-
 	toString() {
-		cout << "[(";
+		string isParallel = 
+			(abs(l1.getGradient() - l2.getGradient()) < numeric_limits<double>::epsilon()) ? "true" : "false";
+		cout << "Lines: [(";
 		cout << l1.p1.x << ", " << l1.p1.y << "), (" << l1.p2.x << ", " << l1.p2.y;
 		cout << ")], [(";
 		cout << l2.p1.x << ", " << l2.p1.y << "), (" << l2.p2.x << ", " << l2.p2.y;
 		cout << ")]";
-		cout << endl;
+		cout << ", gradients = (" << l1.getGradient() 
+			<< ", " << l2.getGradient() << "), parallel = " << isParallel << "\n";
 	}
 };
 
@@ -191,7 +222,8 @@ int main(int argc, char** argv) {
 	// Initialize lines
 	// Parallel lines p1 and p2 form a square
 	// Parallel lines p3 and p4 form a square
-	vector<Line> lines { l1, l2, l3, l4, l5, l6, l7, l8 };
+	vector<Line> lines { l5, l6, l7, l8 };
+	// vector<Line> lines { l1, l2, l3, l4, l5, l6, l7, l8 };
 
 	// Find all pairs of parallel lines
 	cout << "Find parallel lines: \n";

@@ -10,8 +10,6 @@ https://www.glassdoor.sg/Interview/Google-Interview-RVW24716000.htm
 
 Contact me if you would like to discuss on this problem!
 
-WORK IN PROGRESS: Still yet to implement the function getPerpendicularDistance()
-
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -26,4 +24,10 @@ g++ squares.cpp
 
 ```
 a.exe
+```
+
+### Run on Linux
+
+```
+./a.out
 ```
