@@ -31,7 +31,7 @@ public:
 			&& !abs(this->y - MAX) < EPSILON;
 	}
 
-	toString() {
+	void toString() {
 		cout << "(" << x << ", " << y << ") ";
 	}
 };
@@ -162,7 +162,7 @@ public:
 			|| abs(p1.getEuclideanDistance(p2) - p1.getEuclideanDistance(p4)) < EPSILON);
 	}
 
-	toString() {
+	void toString() {
 		cout << "Lines: [(";
 		cout << l1.p1.x << ", " << l1.p1.y << "), (" << l1.p2.x << ", " << l1.p2.y;
 		cout << ")], [(";
